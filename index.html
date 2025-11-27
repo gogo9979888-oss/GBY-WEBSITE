@@ -4,140 +4,809 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موقع بيع الإيميلات</title>
-
     <style>
-        body {font-family: Tahoma, Arial; background:#f8faf5; margin:0; padding:0}
-        header {background:#d4af37; color:white; padding:20px; text-align:center}
-        .container {max-width:700px; margin:auto; background:white; margin-top:20px; padding:20px; border-radius:10px}
-        label {display:block; margin-top:10px}
-        input,textarea {width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; box-sizing:border-box}
-        button {margin-top:20px; width:100%; background:#22c55e; color:white; padding:15px; border:none; font-size:18px; border-radius:6px; cursor:pointer}
-        button:hover {opacity:.9}
-        .payment {display:flex; margin-top:10px; gap:8px}
-        .payment div {flex:1; padding:10px; border:1px solid #ddd; cursor:pointer; text-align:center; border-radius:6px; user-select:none}
-        .payment .active {background:#fef3c7; border-color:#d4af37}
-        .hidden {display:none}
+        :root {
+            --primary-gold: #d4af37;
+            --dark-gold: #b8941f;
+            --accent-green: #22c55e;
+            --light-bg: #f8faf5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .hero {
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-option {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option.active {
+            border-color: var(--primary-gold);
+            background: #fefce8;
+        }
+        
+        .payment-details {
+            display: none;
+            background: #f8faf5;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .hidden-admin {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--primary-gold);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        
+        .admin-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 80%;
+            background: white;
+            border-radius: 15px;
+            z-index: 1002;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .export-btn, .delete-btn, .close-admin {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        
+        .export-btn {
+            background: var(--accent-green);
+            color: white;
+        }
+        
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .close-admin {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .data-table th {
+            background: #f8faf5;
+            font-weight: 600;
+        }
+        
+        .emails-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 70%;
+            background: white;
+            border-radius: 15px;
+            z-index: 1003;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>💰 موقع بيع الإيميلات</h1>
+            <p>بيع إيميلاتك بأفضل الأسعار وأعلى جودة</p>
+        </div>
+    </header>
 
-<header>
-    <h2>💰 بيع الإيميلات</h2>
-    <p>أرسل بياناتك بسهولة، والطلب يوصلك على واتساب</p>
-</header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>أربح من إيميلاتك الآن!</h2>
+            <p>نحن نشتري الإيميلات بأسعار تنافسية مع ضمان الجودة والخصوصية</p>
+        </div>
+    </section>
 
-<div class="container">
-    <form id="sellForm">
+    <!-- Main Form -->
+    <section class="container">
+        <div class="form-container">
+            <form id="sellForm">
+                <div class="form-group">
+                    <label for="name">الاسم الكامل *</label>
+                    <input type="text" id="name" required placeholder="أدخل اسمك الكامل">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني *</label>
+                    <input type="email" id="email" required placeholder="example@domain.com">
+                    <div class="error-message" id="emailError">البريد الإلكتروني غير صحيح</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف *</label>
+                    <input type="tel" id="phone" required placeholder="أدخل رقم هاتفك">
+                </div>
+                
+                <div class="form-group">
+                    <label for="emails">قائمة الإيميلات (سطر لكل إيميل) *</label>
+                    <textarea id="emails" required placeholder="أدخل الإيميلات هنا، سطر واحد لكل إيميل&#10;مثال:&#10;email1@example.com&#10;email2@example.com"></textarea>
+                    <div id="emailCount" style="margin-top: 8px; color: #666; font-size: 14px;">عدد الإيميلات: 0</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>طريقة استلام الأموال *</label>
+                    <div class="payment-options">
+                        <div class="payment-option" data-method="orange">
+                            🟠 Orange Cash
+                        </div>
+                        <div class="payment-option" data-method="binance">
+                            🟡 Binance
+                        </div>
+                    </div>
+                    
+                    <div class="payment-details" id="orangeDetails">
+                        <label for="orangeNumber">رقم Orange Cash *</label>
+                        <input type="text" id="orangeNumber" placeholder="أدخل رقم Orange Cash">
+                    </div>
+                    
+                    <div class="payment-details" id="binanceDetails">
+                        <label for="binanceId">رقم Binance *</label>
+                        <input type="text" id="binanceId" placeholder="أدخل رقم Binance">
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">🚀 إرسال الطلب</button>
+            </form>
+        </div>
+    </section>
 
-        <label for="name">الاسم</label>
-        <input id="name" required>
+    <!-- Features + Footer -->
+    <section class="container">
+        <div class="features" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin-bottom:28px;">
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
+                <div style="font-size:30px">💸</div>
+                <h3 style="color:var(--accent-green); margin-top:10px;">أسعار منافسة</h3>
+                <p>نضمن سعرًا عادلًا بعد التحقق من جودة الإيميلات.</p>
+            </div>
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
+                <div style="font-size:30px">🔒</div>
+                <h3 style="color:var(--accent-green); margin-top:10px;">آمن وموثوق</h3>
+                <p>خصوصيتك أولًا — البيانات محفوظة محليًا ويمكنك تصديرها بسرعة.</p>
+            </div>
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
+                <div style="font-size:30px">⚡</div>
+                <h3 style="color:var(--accent-green); margin-top:10px;">سريع التنفيذ</h3>
+                <p>مراجعات سريعة وتحويل الأموال حسب الاتفاق.</p>
+            </div>
+        </div>
+    </section>
 
-        <label for="email">البريد الإلكتروني</label>
-        <input id="email" type="email" required>
+    <footer style="margin-top:30px; padding:24px 0; background: linear-gradient(90deg,var(--primary-gold),var(--dark-gold)); color:white; text-align:center;">
+        <div class="container">
+            <p>© 2025 موقع بيع الإيميلات. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
 
-        <label for="phone">رقم الهاتف</label>
-        <input id="phone" required>
+    <!-- Hidden admin button + admin UI -->
+    <button class="hidden-admin" id="hiddenAdminBtn" title="لوحة التحكم المخفية">🔒</button>
 
-        <label for="emails">الإيميلات (سطر لكل إيميل)</label>
-        <textarea id="emails" rows="6" required></textarea>
+    <div class="admin-overlay" id="adminOverlay" style="display:none;"></div>
 
-        <label>طريقة الدفع</label>
-        <div class="payment">
-            <div data-method="Orange Cash">🟠 Orange</div>
-            <div data-method="Binance">🟡 Binance</div>
+    <div class="admin-panel" id="adminPanel" style="display:none;">
+        <div class="admin-header">
+            <h2>📊 لوحة التحكم - بيانات العملاء</h2>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="close-admin" id="closeAdmin">✕ إغلاق</button>
+                <button class="export-btn" id="refreshData">🔄 تحديث</button>
+            </div>
         </div>
 
-        <div id="orangeBox" class="hidden">
-            <label for="orangeNumber">رقم Orange Cash</label>
-            <input id="orangeNumber">
+        <div class="stats-cards" id="statsCards" style="margin-bottom:12px;">
+            <!-- إحصائيات -->
         </div>
 
-        <div id="binanceBox" class="hidden">
-            <label for="binanceId">حساب Binance</label>
-            <input id="binanceId">
+        <div style="margin-bottom:14px;">
+            <button class="export-btn" id="exportAll">📥 تصدير جميع البيانات</button>
+            <button class="delete-btn" id="deleteAll">🗑️ حذف جميع البيانات</button>
+            <button class="export-btn" id="testData">🧪 إضافة بيانات تجريبية</button>
         </div>
 
-        <button type="submit">إرسال على واتساب</button>
+        <table class="data-table" aria-live="polite">
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>الاسم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>رقم الهاتف</th>
+                    <th>عدد الإيميلات</th>
+                    <th>طريقة الدفع</th>
+                    <th>رقم الدفع</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <!-- بيانات -->
+            </tbody>
+        </table>
 
-    </form>
-</div>
+        <div id="noData" style="text-align:center; padding:30px; display:none;">
+            <h3 style="color:#666; margin-bottom:8px;">لا توجد بيانات حالياً</h3>
+            <p style="color:#999;">سيظهر هنا بيانات العملاء فور إرسالهم للنماذج</p>
+        </div>
+    </div>
 
-<script>
-    let methodSelected = "";
+    <!-- Emails Modal -->
+    <div class="emails-modal" id="emailsModal" style="display:none;">
+        <div class="admin-header">
+            <h3>📧 الإيميلات والبيانات الكاملة</h3>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="close-admin" id="closeEmails">✕ إغلاق</button>
+            </div>
+        </div>
 
-    // اختيار طريقة الدفع
-    document.querySelectorAll(".payment div").forEach(item => {
-        item.onclick = function(){
-            document.querySelectorAll(".payment div").forEach(x => x.classList.remove("active"));
-            this.classList.add("active");
-            methodSelected = this.dataset.method;
+        <div class="customer-info" id="customerInfo" style="background:#f7fff7; padding:12px; border-radius:8px; margin-bottom:12px;"></div>
 
-            document.getElementById("orangeBox").classList.toggle("hidden", methodSelected !== "Orange Cash");
-            document.getElementById("binanceBox").classList.toggle("hidden", methodSelected !== "Binance");
+        <h3>📋 قائمة الإيميلات:</h3>
+        <div class="emails-content" id="emailsContent" style="background:#f8faf5; padding:12px; border-radius:8px; white-space:pre-wrap; font-family:monospace;"></div>
+
+        <div style="text-align:center; margin-top:12px;">
+            <button class="export-btn" id="exportEmails">📥 تصدير الإيميلات</button>
+            <button class="export-btn" id="copyEmailsBtn">📋 نسخ الإيميلات</button>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        // إعدادات
+        const STORAGE_KEY = "secure_customer_data_v5";
+        const ADMIN_ACCESS_CODE = "19582006";
+
+        let currentCustomerData = null;
+        let currentCustomerEmails = "";
+
+        // تأكد أن زر الإرسال له type=submit
+        document.querySelector('#sellForm .submit-btn, #sellForm button[type="submit"]').setAttribute('type','submit');
+
+        // تفعيل اختيار طريقة الدفع (عرض الحقول المناسبة)
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function(){
+                document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                const method = this.getAttribute('data-method');
+                if(method === 'orange'){
+                    document.getElementById('orangeDetails').style.display = 'block';
+                    document.getElementById('binanceDetails').style.display = 'none';
+                } else {
+                    document.getElementById('orangeDetails').style.display = 'none';
+                    document.getElementById('binanceDetails').style.display = 'block';
+                }
+            });
+        });
+
+        // عد الإيميلات أثناء الكتابة
+        document.getElementById('emails').addEventListener('input', function() {
+            const emailsText = this.value.trim();
+            let count = 0;
+            if(emailsText){
+                const lines = emailsText.split(/\r?\n/).filter(l => l.trim() !== '');
+                count = lines.length;
+                if(count > 10000){
+                    alert('لا يمكن إدخال أكثر من 10,000 إيميل');
+                    this.value = lines.slice(0,10000).join('\n');
+                    count = 10000;
+                }
+            }
+            document.getElementById('emailCount').textContent = 'عدد الإيميلات: ' + count;
+        });
+
+        // دالة تحقق البريد الإلكتروني المصححة
+        function validateEmail(email){
+            if(!email) return false;
+            // regex مصحح
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
+            return re.test(email);
         }
-    });
 
-    // إرسال الفورم على واتساب
-    document.getElementById("sellForm").onsubmit = function(e){
-        e.preventDefault();
-
-        const nameValue   = document.getElementById("name").value.trim();
-        const emailValue  = document.getElementById("email").value.trim();
-        const phoneValue  = document.getElementById("phone").value.trim();
-        const emailsValue = document.getElementById("emails").value.trim();
-        const orangeVal   = document.getElementById("orangeNumber").value.trim();
-        const binanceVal  = document.getElementById("binanceId").value.trim();
-
-        if(!nameValue || !emailValue || !phoneValue || !emailsValue){
-            alert("املأ كل البيانات المطلوبة");
-            return;
+        // دوال التخزين: استخدام JSON مباشر لتفادي مشاكل btoa/atob مع يونيكود
+        function getSecureData(){
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if(!raw) return [];
+                return JSON.parse(raw);
+            } catch (e) {
+                console.error('خطأ في تحميل البيانات:', e);
+                return [];
+            }
         }
 
-        if(!methodSelected){
-            alert("اختر طريقة الدفع");
-            return;
+        function setSecureData(data){
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch(e) {
+                console.error('خطأ في حفظ البيانات:', e);
+            }
         }
 
-        let pay;
-        if(methodSelected === "Orange Cash"){
-            if(!orangeVal){
-                alert("اكتب رقم Orange Cash");
+        // حفظ سجل العميل
+        function saveCustomerDataSecurely(formData){
+            const arr = getSecureData();
+            const newCustomer = {
+                id: formData.id,
+                date: formData.date,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                emailCount: formData.emails.split(/\r?\n/).filter(l => l.trim() !== '').length,
+                paymentMethod: formData.paymentMethod,
+                paymentNumber: formData.paymentMethod === 'orange' ? formData.orangeNumber : formData.binanceId,
+                emails: formData.emails,
+                isNew: true,
+                timestamp: formData.timestamp
+            };
+            arr.unshift(newCustomer);
+            setSecureData(arr);
+
+            // إذا لوحة التحكم مفتوحة حدّث العرض
+            if(document.getElementById('adminPanel').style.display === 'block'){
+                loadCustomerData();
+                updateStats();
+            }
+        }
+
+        // معالجة ارسال الفورم
+        document.getElementById('sellForm').addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const emailsVal = document.getElementById('emails').value.trim();
+            const paymentMethod = document.querySelector('.payment-option.active')?.getAttribute('data-method') || null;
+            const orangeNumber = document.getElementById('orangeNumber').value.trim();
+            const binanceId = document.getElementById('binanceId').value.trim();
+
+            // تحقق الحقول الأساسية
+            if(!name || !email || !phone){
+                alert('يرجى ملء الاسم والبريد والهاتف');
                 return;
             }
-            pay = orangeVal;
-        } else if(methodSelected === "Binance"){
-            if(!binanceVal){
-                alert("اكتب حساب Binance");
+
+            // تحقق الايميل باستخدام الدالة المخصصة
+            const emailErrorDiv = document.getElementById('emailError');
+            if(!validateEmail(email)){
+                emailErrorDiv.style.display = 'block';
+                alert('🛑 البريد الإلكتروني غير صحيح. تأكد من كتابة البريد مثل: name@example.com');
+                return;
+            } else {
+                emailErrorDiv.style.display = 'none';
+            }
+
+            if(!paymentMethod){
+                alert('يرجى اختيار طريقة استلام الأموال');
                 return;
             }
-            pay = binanceVal;
+            if(paymentMethod === 'orange' && !orangeNumber){
+                alert('يرجى إدخال رقم Orange Cash');
+                return;
+            }
+            if(paymentMethod === 'binance' && !binanceId){
+                alert('يرجى إدخال رقم Binance');
+                return;
+            }
+
+            const emailLines = emailsVal ? emailsVal.split(/\r?\n/).filter(l => l.trim() !== '') : [];
+            if(emailLines.length === 0){
+                alert('يرجى إدخال الإيميلات (سطر لكل إيميل)');
+                return;
+            }
+
+            // جهّز كائن الحفظ
+            const formData = {
+                name, email, phone, emails: emailsVal,
+                paymentMethod, orangeNumber, binanceId,
+                date: new Date().toLocaleString('ar-EG'),
+                id: Date.now() + Math.random().toString(36).substr(2,9),
+                timestamp: Date.now()
+            };
+
+            saveCustomerDataSecurely(formData);
+
+            alert('✅ تم إرسال الطلب بنجاح! يمكنك عرض البيانات في لوحة التحكم (زر 🔒 أسفل الصفحة)');
+
+            // إفراغ الحقول وإعادة ضبط الواجهات
+            this.reset();
+            document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+            document.getElementById('orangeDetails').style.display = 'none';
+            document.getElementById('binanceDetails').style.display = 'none';
+            document.getElementById('emailCount').textContent = 'عدد الإيميلات: 0';
+        });
+
+        // لوحة التحكم: نظام الدخول المخفي
+        let accessAttempts = 0;
+        const maxAttempts = 3;
+
+        document.getElementById('hiddenAdminBtn').addEventListener('click', function(){
+            const code = prompt('🔐 أدخل كود الوصول:');
+            if(code === ADMIN_ACCESS_CODE){
+                accessAttempts = 0;
+                showAdminPanel();
+            } else {
+                accessAttempts++;
+                alert('كود خاطئ. المحاولات المتبقية: ' + (maxAttempts - accessAttempts));
+                if(accessAttempts >= maxAttempts){
+                    alert('تم تجاوز الحد، سيتم إعادة تحميل الصفحة.');
+                    setTimeout(() => location.reload(), 800);
+                }
+            }
+        });
+
+        function showAdminPanel(){
+            document.getElementById('adminOverlay').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadCustomerData();
+            updateStats();
         }
 
-        const emailsLines = emailsValue.split("\n").map(x => x.trim()).filter(x => x !== "");
-        const count = emailsLines.length;
+        document.getElementById('closeAdmin').addEventListener('click', function(){
+            document.getElementById('adminOverlay').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+        });
+        document.getElementById('adminOverlay').addEventListener('click', function(){
+            document.getElementById('adminOverlay').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+        });
 
-        const message = `طلب جديد 💰
+        // اضافة بيانات تجريبية
+        document.getElementById('testData').addEventListener('click', function(){
+            const test = {
+                name: "أحمد محمد",
+                email: "test@example.com",
+                phone: "01012345678",
+                emails: "a@test.com\nb@test.com\nc@test.com",
+                paymentMethod: "orange",
+                orangeNumber: "01012345678",
+                binanceId: "",
+                date: new Date().toLocaleString('ar-EG'),
+                id: "test_" + Date.now(),
+                isNew: true,
+                timestamp: Date.now()
+            };
+            saveCustomerDataSecurely(test);
+            alert('✅ تم إضافة بيانات تجريبية');
+        });
 
-👤 الاسم: ${nameValue}
-📧 البريد: ${emailValue}
-📞 الهاتف: ${phoneValue}
+        // تحديث الإحصائيات
+        function updateStats(){
+            const data = getSecureData();
+            const statsCards = document.getElementById('statsCards');
+            const totalCustomers = data.length;
+            const totalEmails = data.reduce((s,c) => s + (c.emailCount || 0), 0);
+            const orangeCount = data.filter(c => c.paymentMethod === 'orange').length;
+            const binanceCount = data.filter(c => c.paymentMethod === 'binance').length;
 
-📩 عدد الإيميلات: ${count}
+            statsCards.innerHTML = `
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${totalCustomers}</h3>
+                    <p style="margin:4px 0 0;">إجمالي العملاء</p>
+                </div>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${totalEmails}</h3>
+                    <p style="margin:4px 0 0;">إجمالي الإيميلات</p>
+                </div>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${orangeCount}</h3>
+                    <p style="margin:4px 0 0;">عملاء Orange Cash</p>
+                </div>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${binanceCount}</h3>
+                    <p style="margin:4px 0 0;">عملاء Binance</p>
+                </div>
+            `;
+        }
 
-💳 طريقة الدفع: ${methodSelected}
-🔢 رقم الدفع: ${pay}
+        // تحميل واظهار بيانات الجدول
+        function loadCustomerData(){
+            const data = getSecureData();
+            const tbody = document.getElementById('dataTableBody');
+            const noData = document.getElementById('noData');
+            tbody.innerHTML = '';
 
-📬 الإيميلات:
-${emailsLines.join("\n")}
-`;
+            if(data.length === 0){
+                noData.style.display = 'block';
+                return;
+            }
+            noData.style.display = 'none';
 
-        // رقمك بدون +
-        const whatsappNumber = "201206112591";
-        const url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+            // ترتيب الأحدث أول
+            data.sort((a,b) => b.timestamp - a.timestamp);
 
-        window.open(url, "_blank");
-    };
-</script>
+            data.forEach(customer => {
+                const tr = document.createElement('tr');
+                const newBadge = customer.isNew ? '<span class="new-badge" style="background:#ef4444;color:#fff;padding:4px 8px;border-radius:12px;margin-right:6px;">جديد</span>' : '';
+                tr.innerHTML = `
+                    <td>${escapeHtml(customer.date)}</td>
+                    <td>${newBadge}${escapeHtml(customer.name)}</td>
+                    <td>${escapeHtml(customer.email)}</td>
+                    <td>${escapeHtml(customer.phone)}</td>
+                    <td><strong>${customer.emailCount || 0}</strong></td>
+                    <td>${customer.paymentMethod === 'orange' ? '🟠 Orange Cash' : '🟡 Binance'}</td>
+                    <td>${escapeHtml(customer.paymentNumber || '')}</td>
+                    <td>
+                        <button class="export-btn" onclick="showCustomerEmails('${customer.id}')">📧 عرض</button>
+                        <button class="delete-btn" onclick="deleteRecord('${customer.id}')">🗑️ حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
 
+            // إزالة علم "جديد" بعد 5 ثواني
+            setTimeout(() => {
+                const saved = getSecureData().map(c => ({ ...c, isNew: false }));
+                setSecureData(saved);
+            }, 5000);
+        }
+
+        // عرض إيميلات العميل في المودال
+        function showCustomerEmails(customerId){
+            const data = getSecureData();
+            const customer = data.find(c => c.id === customerId);
+            if(!customer) return;
+            currentCustomerData = customer;
+            currentCustomerEmails = customer.emails || '';
+
+            document.getElementById('customerInfo').innerHTML = `
+                <p><strong>الاسم:</strong> ${escapeHtml(customer.name)}</p>
+                <p><strong>البريد:</strong> ${escapeHtml(customer.email)}</p>
+                <p><strong>الهاتف:</strong> ${escapeHtml(customer.phone)}</p>
+                <p><strong>طريقة الدفع:</strong> ${customer.paymentMethod === 'orange' ? '🟠 Orange Cash' : '🟡 Binance'}</p>
+                <p><strong>رقم الدفع:</strong> ${escapeHtml(customer.paymentNumber || '')}</p>
+                <p><strong>عدد الإيميلات:</strong> ${customer.emailCount || 0}</p>
+                <p><strong>التاريخ:</strong> ${escapeHtml(customer.date)}</p>
+            `;
+            document.getElementById('emailsContent').textContent = customer.emails || '';
+            document.getElementById('emailsModal').style.display = 'block';
+        }
+
+        document.getElementById('closeEmails').addEventListener('click', function(){
+            document.getElementById('emailsModal').style.display = 'none';
+        });
+
+        // نسخ الإيميلات
+        document.getElementById('copyEmailsBtn').addEventListener('click', function(){
+            if(!currentCustomerEmails) return alert('لا توجد إيميلات للنسخ');
+            navigator.clipboard.writeText(currentCustomerEmails).then(() => alert('تم نسخ الإيميلات إلى الحافظة')).catch(err => console.error(err));
+        });
+
+        // تصدير إيميلات العميل
+        document.getElementById('exportEmails').addEventListener('click', function(){
+            if(!currentCustomerData) return;
+            const text = `بيانات العميل: ${currentCustomerData.name}\nالبريد: ${currentCustomerData.email}\nالهاتف: ${currentCustomerData.phone}\nطريقة الدفع: ${currentCustomerData.paymentMethod}\nرقم الدفع: ${currentCustomerData.paymentNumber}\nالتاريخ: ${currentCustomerData.date}\n\nالإيميلات:\n${currentCustomerEmails}`;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `emails_${sanitizeFilename(currentCustomerData.name)}_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // تصدير جميع البيانات
+        document.getElementById('exportAll').addEventListener('click', function(){
+            const data = getSecureData();
+            if(data.length === 0){ alert('لا توجد بيانات للتصدير'); return; }
+            let out = 'بيانات العملاء - موقع بيع الإيميلات\n\n';
+            data.forEach((c,i) => {
+                out += `=== عميل ${i+1} ===\n`;
+                out += `التاريخ: ${c.date}\nالاسم: ${c.name}\nالبريد: ${c.email}\nالهاتف: ${c.phone}\nعدد الإيميلات: ${c.emailCount}\nطريقة الدفع: ${c.paymentMethod}\nرقم الدفع: ${c.paymentNumber}\nالإيميلات:\n${c.emails}\n\n`;
+            });
+            const blob = new Blob([out], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `customers_data_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('تم تصدير جميع البيانات');
+        });
+
+        // حذف جميع البيانات
+        document.getElementById('deleteAll').addEventListener('click', function(){
+            if(!confirm('هل أنت متأكد من حذف جميع البيانات؟')) return;
+            localStorage.removeItem(STORAGE_KEY);
+            loadCustomerData();
+            updateStats();
+            alert('تم حذف جميع البيانات بنجاح');
+        });
+
+        // حذف سجل واحد
+        function deleteRecord(id){
+            if(!confirm('هل تريد حذف هذا السجل؟')) return;
+            const data = getSecureData().filter(c => c.id !== id);
+            setSecureData(data);
+            loadCustomerData();
+            updateStats();
+        }
+
+        // مساعدة صغيرة لمنع XSS عند العرض
+        function escapeHtml(text){
+            if(!text) return '';
+            return text.replace(/[&<>"'`=\\/]/g, function(s){
+                return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;','`':'&#x60;','=':'&#x3D;'}[s]);
+            });
+        }
+
+        function sanitizeFilename(name){
+            return (name || 'user').replace(/[^a-z0-9_\-\u0600-\u06FF ]/gi, '').replace(/\s+/g,'_');
+        }
+
+        // تهيئة بسيطة عند التحميل
+        document.addEventListener('DOMContentLoaded', function(){
+            // لا نظهر اللوحة تلقائياً - المستخدم يضغط زر 🔒
+            updateStats();
+            // نضمن أن زر الإرسال في الفورم موجود ونوعه submit
+            const btn = document.querySelector('#sellForm .submit-btn');
+            if(btn) btn.setAttribute('type','submit');
+        });
+
+        // إضافة زر التحديث
+        document.getElementById('refreshData').addEventListener('click', function(){
+            loadCustomerData();
+            updateStats();
+            alert('تم تحديث البيانات');
+        });
+    </script>
 </body>
 </html>
