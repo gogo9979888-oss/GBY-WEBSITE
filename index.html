@@ -1,109 +1,126 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>موقع بيع الإيميلات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع بيع الإيميلات</title>
 
-<style>
-body {font-family: Tahoma; background:#f8faf5; margin:0; padding:0}
-header {background:#d4af37; color:white; padding:20px; text-align:center}
-.container {max-width:700px; margin:auto; background:white; margin-top:20px; padding:20px; border-radius:10px}
-label {display:block; margin-top:10px}
-input,textarea {width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px}
-button {margin-top:20px; width:100%; background:#22c55e; color:white; padding:15px; border:none; font-size:18px; border-radius:6px; cursor:pointer}
-.payment {display:flex; margin-top:10px}
-.payment div {flex:1; padding:10px; border:1px solid #ddd; cursor:pointer; text-align:center}
-.payment .active {background:#fef3c7; border-color:#d4af37}
-.hidden {display:none}
-</style>
-
+    <style>
+        body {font-family: Tahoma, Arial; background:#f8faf5; margin:0; padding:0}
+        header {background:#d4af37; color:white; padding:20px; text-align:center}
+        .container {max-width:700px; margin:auto; background:white; margin-top:20px; padding:20px; border-radius:10px}
+        label {display:block; margin-top:10px}
+        input,textarea {width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px; box-sizing:border-box}
+        button {margin-top:20px; width:100%; background:#22c55e; color:white; padding:15px; border:none; font-size:18px; border-radius:6px; cursor:pointer}
+        button:hover {opacity:.9}
+        .payment {display:flex; margin-top:10px; gap:8px}
+        .payment div {flex:1; padding:10px; border:1px solid #ddd; cursor:pointer; text-align:center; border-radius:6px; user-select:none}
+        .payment .active {background:#fef3c7; border-color:#d4af37}
+        .hidden {display:none}
+    </style>
 </head>
 <body>
 
 <header>
-<h2>💰 بيع الإيميلات</h2>
-<p>أرسل بياناتك بسهولة وراحتك علينا</p>
+    <h2>💰 بيع الإيميلات</h2>
+    <p>أرسل بياناتك بسهولة، والطلب يوصلك على واتساب</p>
 </header>
 
 <div class="container">
-<form id="sellForm">
+    <form id="sellForm">
 
-<label>الاسم</label>
-<input id="name" required>
+        <label for="name">الاسم</label>
+        <input id="name" required>
 
-<label>البريد الإلكتروني</label>
-<input id="email" type="email" required>
+        <label for="email">البريد الإلكتروني</label>
+        <input id="email" type="email" required>
 
-<label>رقم الهاتف</label>
-<input id="phone" required>
+        <label for="phone">رقم الهاتف</label>
+        <input id="phone" required>
 
-<label>الإيميلات (سطر لكل إيميل)</label>
-<textarea id="emails" rows="6" required></textarea>
+        <label for="emails">الإيميلات (سطر لكل إيميل)</label>
+        <textarea id="emails" rows="6" required></textarea>
 
-<label>طريقة الدفع</label>
-<div class="payment">
-<div data-method="Orange Cash">🟠 Orange</div>
-<div data-method="Binance">🟡 Binance</div>
-</div>
+        <label>طريقة الدفع</label>
+        <div class="payment">
+            <div data-method="Orange Cash">🟠 Orange</div>
+            <div data-method="Binance">🟡 Binance</div>
+        </div>
 
-<div id="orangeBox" class="hidden">
-<label>رقم Orange</label>
-<input id="orangeNumber">
-</div>
+        <div id="orangeBox" class="hidden">
+            <label for="orangeNumber">رقم Orange Cash</label>
+            <input id="orangeNumber">
+        </div>
 
-<div id="binanceBox" class="hidden">
-<label>حساب Binance</label>
-<input id="binanceId">
-</div>
+        <div id="binanceBox" class="hidden">
+            <label for="binanceId">حساب Binance</label>
+            <input id="binanceId">
+        </div>
 
-<button type="submit">إرسال على واتساب</button>
+        <button type="submit">إرسال على واتساب</button>
 
-</form>
+    </form>
 </div>
 
 <script>
-let methodSelected = "";
+    let methodSelected = "";
 
-document.querySelectorAll(".payment div").forEach(item=>{
-item.onclick = function(){
-document.querySelectorAll(".payment div").forEach(x=>x.classList.remove("active"))
-this.classList.add("active");
-methodSelected = this.dataset.method;
-document.getElementById("orangeBox").classList.toggle("hidden", methodSelected!="Orange Cash");
-document.getElementById("binanceBox").classList.toggle("hidden", methodSelected!="Binance");
-}
-});
+    // اختيار طريقة الدفع
+    document.querySelectorAll(".payment div").forEach(item => {
+        item.onclick = function(){
+            document.querySelectorAll(".payment div").forEach(x => x.classList.remove("active"));
+            this.classList.add("active");
+            methodSelected = this.dataset.method;
 
-document.getElementById("sellForm").onsubmit = function(e){
-e.preventDefault();
+            document.getElementById("orangeBox").classList.toggle("hidden", methodSelected !== "Orange Cash");
+            document.getElementById("binanceBox").classList.toggle("hidden", methodSelected !== "Binance");
+        }
+    });
 
-let name = name.value.trim();
-let email = email.value.trim();
-let phone = phone.value.trim();
-let emails = document.getElementById("emails").value.trim();
+    // إرسال الفورم على واتساب
+    document.getElementById("sellForm").onsubmit = function(e){
+        e.preventDefault();
 
-if(!methodSelected){
-alert("اختر طريقة الدفع");
-return;
-}
+        const nameValue   = document.getElementById("name").value.trim();
+        const emailValue  = document.getElementById("email").value.trim();
+        const phoneValue  = document.getElementById("phone").value.trim();
+        const emailsValue = document.getElementById("emails").value.trim();
+        const orangeVal   = document.getElementById("orangeNumber").value.trim();
+        const binanceVal  = document.getElementById("binanceId").value.trim();
 
-let pay =
-methodSelected=="Orange Cash" ? orangeNumber.value.trim() :
-methodSelected=="Binance" ? binanceId.value.trim() : "";
+        if(!nameValue || !emailValue || !phoneValue || !emailsValue){
+            alert("املأ كل البيانات المطلوبة");
+            return;
+        }
 
-if(!pay){
-alert("اكتب بيانات الدفع");
-return;
-}
+        if(!methodSelected){
+            alert("اختر طريقة الدفع");
+            return;
+        }
 
-let count = emails.split("\n").filter(x=>x.trim()).length;
+        let pay;
+        if(methodSelected === "Orange Cash"){
+            if(!orangeVal){
+                alert("اكتب رقم Orange Cash");
+                return;
+            }
+            pay = orangeVal;
+        } else if(methodSelected === "Binance"){
+            if(!binanceVal){
+                alert("اكتب حساب Binance");
+                return;
+            }
+            pay = binanceVal;
+        }
 
-let message = `طلب جديد 💰
+        const emailsLines = emailsValue.split("\n").map(x => x.trim()).filter(x => x !== "");
+        const count = emailsLines.length;
 
-👤 الاسم: ${name}
-📧 البريد: ${email}
-📞 الهاتف: ${phone}
+        const message = `طلب جديد 💰
+
+👤 الاسم: ${nameValue}
+📧 البريد: ${emailValue}
+📞 الهاتف: ${phoneValue}
 
 📩 عدد الإيميلات: ${count}
 
@@ -111,14 +128,16 @@ let message = `طلب جديد 💰
 🔢 رقم الدفع: ${pay}
 
 📬 الإيميلات:
-${emails}
+${emailsLines.join("\n")}
 `;
 
-let url = "https://wa.me/201206112591?text=" + encodeURIComponent(message);
-window.open(url,"_blank");
+        // رقمك بدون +
+        const whatsappNumber = "201206112591";
+        const url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
 
-}
+        window.open(url, "_blank");
+    };
 </script>
 
 </body>
-</html>  
+</html>
