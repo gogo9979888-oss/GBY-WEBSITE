@@ -1,17 +1,13 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موقع بيع الإيميلات</title>
-
-    <!-- خط عربي جميل -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap">
-
     <style>
         :root {
-            --primary-gold: #e0b44a;
-            --dark-gold: #b3851a;
+            --primary-gold: #d4af37;
+            --dark-gold: #b8941f;
             --accent-green: #22c55e;
             --light-bg: #f8faf5;
         }
@@ -20,12 +16,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: radial-gradient(circle at top, #fefce8 0, #f8faf5 45%, #f1f5f9 100%);
-            color: #111827;
+            background: var(--light-bg);
+            color: #333;
             line-height: 1.6;
         }
         
@@ -38,111 +34,22 @@
         header {
             background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
             color: white;
-            padding: 1.6rem 0;
-        }
-
-        .header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #fefce8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .header-title h1 {
-            font-size: 22px;
-            margin: 0;
-        }
-
-        .header-title p {
-            margin: 0;
-            font-size: 13px;
-            opacity: .95;
-        }
-
-        .header-cta {
-            background: white;
-            color: #b3851a;
-            padding: 9px 18px;
-            border-radius: 999px;
-            font-size: 14px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-            transition: transform .15s ease, box-shadow .15s ease;
-        }
-
-        .header-cta:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 7px 16px rgba(0,0,0,0.16);
+            padding: 2rem 0;
+            text-align: center;
         }
         
         .hero {
-            padding: 2.6rem 0 2.2rem;
+            padding: 3rem 0;
             text-align: center;
-        }
-
-        .hero h2 {
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
-        .hero p {
-            max-width: 540px;
-            margin: 0 auto 18px;
-            color: #4b5563;
-            font-size: 15px;
-        }
-
-        .hero button {
-            margin-top: 6px;
-            padding: 11px 26px;
-            border: none;
-            border-radius: 999px;
-            background: var(--accent-green);
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 10px 20px rgba(34,197,94,0.35);
-            transition: transform .15s ease, box-shadow .15s ease;
-        }
-
-        .hero button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 24px rgba(34,197,94,0.40);
         }
         
         .form-container {
             background: white;
             padding: 2rem;
-            border-radius: 18px;
-            box-shadow: 0 14px 40px rgba(15,23,42,0.07);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             margin: 2rem auto;
-            max-width: 820px;
-            border: 1px solid rgba(148,163,184,0.3);
+            max-width: 800px;
         }
         
         .form-group {
@@ -153,25 +60,21 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #374151;
-            font-size: 14px;
+            color: #444;
         }
         
         input, textarea {
             width: 100%;
-            padding: 11px 12px;
+            padding: 12px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background: #f9fafb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
         }
         
         input:focus, textarea:focus {
             outline: none;
             border-color: var(--primary-gold);
-            box-shadow: 0 0 0 1px rgba(224,180,74,0.3);
-            background: white;
         }
         
         textarea {
@@ -189,51 +92,45 @@
             flex: 1;
             padding: 1rem;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
-            background: #f9fafb;
-            font-size: 14px;
+            transition: all 0.3s;
         }
         
         .payment-option.active {
             border-color: var(--primary-gold);
             background: #fefce8;
-            box-shadow: 0 8px 18px rgba(202,138,4,0.18);
         }
         
         .payment-details {
             display: none;
             background: #f8faf5;
             padding: 1rem;
-            border-radius: 10px;
-            margin-top: 0.5rem;
-            border: 1px dashed #d1d5db;
+            border-radius: 8px;
+            margin-top: 1rem;
         }
         
         .submit-btn {
             background: linear-gradient(135deg, var(--primary-gold), var(--dark-gold));
             color: white;
             border: none;
-            padding: 14px 30px;
-            font-size: 16px;
-            border-radius: 999px;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s;
-            box-shadow: 0 14px 32px rgba(180,137,31,0.45);
+            transition: transform 0.3s;
         }
         
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 18px 40px rgba(180,137,31,0.55);
         }
         
         .hidden-admin {
             position: fixed;
-            bottom: 16px;
-            left: 16px;
+            bottom: 20px;
+            left: 20px;
             background: var(--primary-gold);
             color: white;
             border: none;
@@ -241,12 +138,9 @@
             height: 50px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-size: 18px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
         .admin-overlay {
@@ -255,7 +149,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15,23,42,0.45);
+            background: rgba(0,0,0,0.5);
             z-index: 1001;
         }
         
@@ -265,35 +159,30 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
-            max-width: 1100px;
             height: 80%;
             background: white;
-            border-radius: 18px;
+            border-radius: 15px;
             z-index: 1002;
             padding: 20px;
             overflow-y: auto;
-            box-shadow: 0 22px 60px rgba(15,23,42,0.45);
         }
         
         .admin-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: between;
             align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid #e2e8f0;
         }
         
         .export-btn, .delete-btn, .close-admin {
-            padding: 8px 14px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 999px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             margin-left: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
         }
         
         .export-btn {
@@ -314,21 +203,18 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 15px;
         }
         
         .data-table th, .data-table td {
-            padding: 10px 8px;
+            padding: 12px;
             text-align: right;
             border-bottom: 1px solid #e2e8f0;
-            vertical-align: top;
         }
         
         .data-table th {
             background: #f8faf5;
             font-weight: 600;
-            white-space: nowrap;
         }
         
         .emails-modal {
@@ -336,141 +222,37 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 900px;
-            height: 75%;
+            width: 80%;
+            height: 70%;
             background: white;
-            border-radius: 16px;
+            border-radius: 15px;
             z-index: 1003;
             padding: 20px;
             overflow-y: auto;
-            box-shadow: 0 18px 50px rgba(15,23,42,0.5);
         }
         
         .error-message {
             color: #ef4444;
-            font-size: 13px;
+            font-size: 14px;
             margin-top: 5px;
             display: none;
-        }
-
-        .features {
-            display:grid; 
-            grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); 
-            gap:16px; 
-            margin-bottom:28px;
-        }
-
-        .feature {
-            background:white; 
-            padding:18px; 
-            border-radius:14px; 
-            text-align:center;
-            border:1px solid rgba(226,232,240,0.8);
-            box-shadow: 0 8px 22px rgba(148,163,184,0.22);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-
-        .feature:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 32px rgba(148,163,184,0.28);
-            border-color: rgba(190,155,52,0.8);
-        }
-
-        footer {
-            margin-top:30px; 
-            padding:20px 0; 
-            background: linear-gradient(90deg,var(--primary-gold),var(--dark-gold)); 
-            color:white; 
-            text-align:center;
-            font-size: 13px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-inner {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .form-container {
-                padding: 1.4rem;
-                margin: 1.5rem auto;
-            }
-
-            .hero {
-                padding: 2rem 0 1.6rem;
-            }
-
-            .hero h2 {
-                font-size: 23px;
-            }
-
-            .hero p {
-                font-size: 14px;
-            }
-
-            .admin-panel {
-                width: 96%;
-                height: 82%;
-                padding: 14px;
-            }
-
-            .data-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            .hidden-admin {
-                width: 44px;
-                height: 44px;
-                bottom: 12px;
-                left: 12px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-title h1 {
-                font-size: 19px;
-            }
-            .header-cta {
-                width: 100%;
-                justify-content: center;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="container header-inner">
-            <div class="header-brand">
-                <div class="header-logo">📧</div>
-                <div class="header-title">
-                    <h1>موقع بيع الإيميلات</h1>
-                    <p>أفضل عروض لبيع القوائم البريدية الجاهزة</p>
-                </div>
-            </div>
-            <button class="header-cta" onclick="document.getElementById('sellForm').scrollIntoView({behavior:'smooth'});">
-                ابدأ البيع الآن 🚀
-            </button>
+        <div class="container">
+            <h1>💰 موقع بيع الإيميلات</h1>
+            <p>بيع إيميلاتك بأفضل الأسعار وأعلى جودة</p>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h2>حوّل الإيميلات اللي عندك لفلوس في دقائق</h2>
-            <p>
-                ارفع قائمة الإيميلات الخاصة بك، اختر طريقة استلام الأموال، 
-                وخلي فريقنا يراجع القوائم ويتواصل معاك لتحويل أرباحك بأمان وسرعة.
-            </p>
-            <button onclick="document.getElementById('sellForm').scrollIntoView({behavior:'smooth'});">
-                🚀 ابدأ بيع الإيميلات الآن
-            </button>
+            <h2>أربح من إيميلاتك الآن!</h2>
+            <p>نحن نشتري الإيميلات بأسعار تنافسية مع ضمان الجودة والخصوصية</p>
         </div>
     </section>
 
@@ -478,8 +260,8 @@
     <section class="container">
         <div class="form-container">
             
-            <!-- تنبيه واضح عن الباسورد -->
-            <div style="background:#fef3c7; border:1px solid #f59e0b; padding:10px 14px; border-radius:10px; margin-bottom:16px; text-align:right; font-size:14px; color:#92400e;">
+            <!-- ✅ تنبيه واضح عن الباسورد -->
+            <div style="background:#fef3c7; border:1px solid #f59e0b; padding:10px 14px; border-radius:10px; margin-bottom:16px; text-align:right;">
                 <strong>⚠️ تنبيه مهم:</strong><br>
                 يرجى إنشاء جميع الحسابات التي سيتم تسليمها لنا باستخدام الباسورد التالي:
                 <span style="direction:ltr; display:inline-block; margin-top:4px; font-weight:bold; font-family:monospace; background:#fff7ed; padding:3px 8px; border-radius:6px;">
@@ -507,10 +289,10 @@
                 <div class="form-group">
                     <label for="emails">قائمة الإيميلات (سطر لكل إيميل) *</label>
                     <textarea id="emails" required placeholder="أدخل الإيميلات هنا، سطر واحد لكل إيميل&#10;مثال:&#10;email1@example.com&#10;email2@example.com"></textarea>
-                    <div id="emailCount" style="margin-top: 8px; color: #6b7280; font-size: 13px;">عدد الإيميلات: 0</div>
+                    <div id="emailCount" style="margin-top: 8px; color: #666; font-size: 14px;">عدد الإيميلات: 0</div>
                     
-                    <!-- ملاحظة قوية عن الباسورد -->
-                    <div style="margin-top:8px; padding:8px 10px; background:#fffbeb; border:1px dashed #f59e0b; border-radius:8px; font-size:13px; color:#92400e;">
+                    <!-- ✅ ملاحظة قوية عن الباسورد -->
+                    <div style="margin-top:8px; padding:8px 10px; background:#fffbeb; border:1px dashed #f59e0b; border-radius:8px; font-size:14px; color:#92400e;">
                         🔑 <strong>ملاحظة مهمة:</strong><br>
                         يرجى إنشاء جميع الحسابات بالبسورد التالي:
                         <span style="direction:ltr; display:inline-block; margin-top:4px; font-weight:bold; font-family:monospace; background:#fff7ed; padding:3px 8px; border-radius:6px;">
@@ -548,26 +330,26 @@
 
     <!-- Features + Footer -->
     <section class="container">
-        <div class="features">
-            <div class="feature">
+        <div class="features" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin-bottom:28px;">
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
                 <div style="font-size:30px">💸</div>
-                <h3 style="color:var(--accent-green); margin-top:10px; font-size:18px;">أسعار منافسة</h3>
-                <p style="font-size:14px; color:#4b5563;">نضمن سعرًا عادلًا بعد التحقق من جودة الإيميلات وعددها واستهدافها.</p>
+                <h3 style="color:var(--accent-green); margin-top:10px;">أسعار منافسة</h3>
+                <p>نضمن سعرًا عادلًا بعد التحقق من جودة الإيميلات.</p>
             </div>
-            <div class="feature">
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
                 <div style="font-size:30px">🔒</div>
-                <h3 style="color:var(--accent-green); margin-top:10px; font-size:18px;">آمن وموثوق</h3>
-                <p style="font-size:14px; color:#4b5563;">بياناتك محفوظة على جهازك ويمكنك إدارتها بالكامل من لوحة التحكم المخفية.</p>
+                <h3 style="color:var(--accent-green); margin-top:10px;">آمن وموثوق</h3>
+                <p>بياناتك محفوظة في جهازك ويمكنك إدارتها من لوحة التحكم.</p>
             </div>
-            <div class="feature">
+            <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
                 <div style="font-size:30px">⚡</div>
-                <h3 style="color:var(--accent-green); margin-top:10px; font-size:18px;">سريع التنفيذ</h3>
-                <p style="font-size:14px; color:#4b5563;">مراجعة سريعة للبيانات، والتواصل معك على واتساب لتحويل المبلغ المتفق عليه.</p>
+                <h3 style="color:var(--accent-green); margin-top:10px;">سريع التنفيذ</h3>
+                <p>مراجعات سريعة وتحويل الأموال حسب الاتفاق.</p>
             </div>
         </div>
     </section>
 
-    <footer>
+    <footer style="margin-top:30px; padding:24px 0; background: linear-gradient(90deg,var(--primary-gold),var(--dark-gold)); color:white; text-align:center;">
         <div class="container">
             <p>© 2025 موقع بيع الإيميلات. جميع الحقوق محفوظة.</p>
         </div>
@@ -580,61 +362,59 @@
 
     <div class="admin-panel" id="adminPanel" style="display:none;">
         <div class="admin-header">
-            <h2 style="font-size:18px;">📊 لوحة التحكم - بيانات العملاء (محفوظة على هذا الجهاز)</h2>
+            <h2>📊 لوحة التحكم - بيانات العملاء (محفوظة على هذا الجهاز)</h2>
             <div style="display:flex; gap:8px; align-items:center;">
                 <button class="close-admin" id="closeAdmin">✕ إغلاق</button>
                 <button class="export-btn" id="refreshData">🔄 تحديث</button>
             </div>
         </div>
 
-        <div class="stats-cards" id="statsCards" style="margin-bottom:12px; display:flex; flex-wrap:wrap; gap:10px;">
+        <div class="stats-cards" id="statsCards" style="margin-bottom:12px;">
             <!-- إحصائيات -->
         </div>
 
-        <div style="margin-bottom:12px;">
+        <div style="margin-bottom:14px;">
             <button class="export-btn" id="exportAll">📥 تصدير جميع البيانات</button>
             <button class="delete-btn" id="deleteAll">🗑️ حذف جميع البيانات</button>
         </div>
 
-        <div style="width:100%; overflow-x:auto;">
-            <table class="data-table" aria-live="polite">
-                <thead>
-                    <tr>
-                        <th>التاريخ</th>
-                        <th>الاسم</th>
-                        <th>البريد الإلكتروني</th>
-                        <th>رقم الهاتف</th>
-                        <th>عدد الإيميلات</th>
-                        <th>طريقة الدفع</th>
-                        <th>رقم الدفع</th>
-                        <th>الإجراءات</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTableBody">
-                    <!-- بيانات -->
-                </tbody>
-            </table>
-        </div>
+        <table class="data-table" aria-live="polite">
+            <thead>
+                <tr>
+                    <th>التاريخ</th>
+                    <th>الاسم</th>
+                    <th>البريد الإلكتروني</th>
+                    <th>رقم الهاتف</th>
+                    <th>عدد الإيميلات</th>
+                    <th>طريقة الدفع</th>
+                    <th>رقم الدفع</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="dataTableBody">
+                <!-- بيانات -->
+            </tbody>
+        </table>
 
-        <div id="noData" style="text-align:center; padding:26px; display:none;">
-            <h3 style="color:#6b7280; margin-bottom:6px; font-size:15px;">لا توجد بيانات حالياً</h3>
-            <p style="color:#9ca3af; font-size:13px;">سيظهر هنا بيانات العملاء فور إرسالهم للنماذج من نفس هذا الجهاز.</p>
+        <div id="noData" style="text-align:center; padding:30px; display:none;">
+            <h3 style="color:#666; margin-bottom:8px;">لا توجد بيانات حالياً</h3>
+            <p style="color:#999;">سيظهر هنا بيانات العملاء فور إرسالهم للنماذج</p>
         </div>
     </div>
 
     <!-- Emails Modal -->
     <div class="emails-modal" id="emailsModal" style="display:none;">
-        <div class="admin-header" style="margin-bottom:10px;">
-            <h3 style="font-size:17px;">📧 الإيميلات والبيانات الكاملة</h3>
+        <div class="admin-header">
+            <h3>📧 الإيميلات والبيانات الكاملة</h3>
             <div style="display:flex; gap:8px; align-items:center;">
                 <button class="close-admin" id="closeEmails">✕ إغلاق</button>
             </div>
         </div>
 
-        <div class="customer-info" id="customerInfo" style="background:#f7fff7; padding:12px; border-radius:8px; margin-bottom:12px; font-size:14px;"></div>
+        <div class="customer-info" id="customerInfo" style="background:#f7fff7; padding:12px; border-radius:8px; margin-bottom:12px;"></div>
 
-        <h3 style="font-size:15px; margin-bottom:6px;">📋 قائمة الإيميلات:</h3>
-        <div class="emails-content" id="emailsContent" style="background:#f8faf5; padding:12px; border-radius:8px; white-space:pre-wrap; font-family:monospace; font-size:13px;"></div>
+        <h3>📋 قائمة الإيميلات:</h3>
+        <div class="emails-content" id="emailsContent" style="background:#f8faf5; padding:12px; border-radius:8px; white-space:pre-wrap; font-family:monospace;"></div>
 
         <div style="text-align:center; margin-top:12px;">
             <button class="export-btn" id="exportEmails">📥 تصدير الإيميلات</button>
@@ -730,7 +510,7 @@
                 count = lines.length;
                 if(count > 10000){
                     alert('لا يمكن إدخال أكثر من 10,000 إيميل');
-                    this.value = lines.slice(0,10000).join('\\n');
+                    this.value = lines.slice(0,10000).join('\n');
                     count = 10000;
                 }
             }
@@ -740,7 +520,7 @@
         // دالة تحقق البريد الإلكتروني
         function validateEmail(email){
             if(!email) return false;
-            const re = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/u;
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
             return re.test(email);
         }
 
@@ -783,7 +563,7 @@
                 return;
             }
 
-            const emailLines = emailsVal ? emailsVal.split(/\\r?\\n/).filter(l => l.trim() !== '') : [];
+            const emailLines = emailsVal ? emailsVal.split(/\r?\n/).filter(l => l.trim() !== '') : [];
             if(emailLines.length === 0){
                 alert('يرجى إدخال الإيميلات (سطر لكل إيميل)');
                 return;
@@ -890,21 +670,21 @@ ${emailsVal}
             const binanceCount = data.filter(c => c.payment_method === 'binance').length;
 
             statsCards.innerHTML = `
-                <div class="stat-card" style="flex:1; min-width:140px; padding:10px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
-                    <h3 style="font-size:20px; margin:0">${totalCustomers}</h3>
-                    <p style="margin:3px 0 0; font-size:13px;">إجمالي العملاء (على هذا الجهاز)</p>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${totalCustomers}</h3>
+                    <p style="margin:4px 0 0;">إجمالي العملاء (على هذا الجهاز)</p>
                 </div>
-                <div class="stat-card" style="flex:1; min-width:140px; padding:10px; background:linear-gradient(90deg,#e0f2fe,#bfdbfe); border-radius:10px; text-align:center;">
-                    <h3 style="font-size:20px; margin:0">${totalEmails}</h3>
-                    <p style="margin:3px 0 0; font-size:13px;">إجمالي الإيميلات</p>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${totalEmails}</h3>
+                    <p style="margin:4px 0 0;">إجمالي الإيميلات</p>
                 </div>
-                <div class="stat-card" style="flex:1; min-width:140px; padding:10px; background:linear-gradient(90deg,#fef3c7,#fde68a); border-radius:10px; text-align:center;">
-                    <h3 style="font-size:20px; margin:0">${orangeCount}</h3>
-                    <p style="margin:3px 0 0; font-size:13px;">عملاء Orange Cash</p>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${orangeCount}</h3>
+                    <p style="margin:4px 0 0;">عملاء Orange Cash</p>
                 </div>
-                <div class="stat-card" style="flex:1; min-width:140px; padding:10px; background:linear-gradient(90deg,#fee2e2,#fecaca); border-radius:10px; text-align:center;">
-                    <h3 style="font-size:20px; margin:0">${binanceCount}</h3>
-                    <p style="margin:3px 0 0; font-size:13px;">عملاء Binance</p>
+                <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
+                    <h3 style="font-size:22px; margin:0">${binanceCount}</h3>
+                    <p style="margin:4px 0 0;">عملاء Binance</p>
                 </div>
             `;
         }
@@ -982,7 +762,7 @@ ${emailsVal}
         document.getElementById('exportEmails').addEventListener('click', function(){
             if(!currentCustomerData) return;
             const c = currentCustomerData;
-            const text = `بيانات العميل: ${c.name}\\nالبريد: ${c.email}\\nالهاتف: ${c.phone}\\nطريقة الدفع: ${c.payment_method}\\nرقم الدفع: ${c.payment_number}\\nالتاريخ: ${c.date_label}\\n\\nالإيميلات:\\n${currentCustomerEmails}`;
+            const text = `بيانات العميل: ${c.name}\nالبريد: ${c.email}\nالهاتف: ${c.phone}\nطريقة الدفع: ${c.payment_method}\nرقم الدفع: ${c.payment_number}\nالتاريخ: ${c.date_label}\n\nالإيميلات:\n${currentCustomerEmails}`;
             const blob = new Blob([text], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -998,10 +778,10 @@ ${emailsVal}
         document.getElementById('exportAll').addEventListener('click', async function(){
             const data = await fetchCustomers();
             if(data.length === 0){ alert('لا توجد بيانات للتصدير'); return; }
-            let out = 'بيانات العملاء - موقع بيع الإيميلات (محفوظة على هذا الجهاز)\\n\\n';
+            let out = 'بيانات العملاء - موقع بيع الإيميلات (محفوظة على هذا الجهاز)\n\n';
             data.forEach((c,i) => {
-                out += `=== عميل ${i+1} ===\\n`;
-                out += `التاريخ: ${c.date_label}\\nالاسم: ${c.name}\\nالبريد: ${c.email}\\nالهاتف: ${c.phone}\\nعدد الإيميلات: ${c.email_count}\\nطريقة الدفع: ${c.payment_method}\\nرقم الدفع: ${c.payment_number}\\nالإيميلات:\\n${c.emails}\\n\\n`;
+                out += `=== عميل ${i+1} ===\n`;
+                out += `التاريخ: ${c.date_label}\nالاسم: ${c.name}\nالبريد: ${c.email}\nالهاتف: ${c.phone}\nعدد الإيميلات: ${c.email_count}\nطريقة الدفع: ${c.payment_method}\nرقم الدفع: ${c.payment_number}\nالإيميلات:\n${c.emails}\n\n`;
             });
             const blob = new Blob([out], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
@@ -1050,7 +830,7 @@ ${emailsVal}
         }
 
         function sanitizeFilename(name){
-            return (name || 'user').replace(/[^a-z0-9_\\-\\u0600-\\u06FF ]/gi, '').replace(/\\s+/g,'_');
+            return (name || 'user').replace(/[^a-z0-9_\-\u0600-\u06FF ]/gi, '').replace(/\s+/g,'_');
         }
 
         // تهيئة بسيطة عند التحميل
