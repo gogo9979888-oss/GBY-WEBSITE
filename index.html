@@ -259,6 +259,16 @@
     <!-- Main Form -->
     <section class="container">
         <div class="form-container">
+            
+            <!-- ✅ تنبيه واضح عن الباسورد -->
+            <div style="background:#fef3c7; border:1px solid #f59e0b; padding:10px 14px; border-radius:10px; margin-bottom:16px; text-align:right;">
+                <strong>⚠️ تنبيه مهم:</strong><br>
+                يرجى إنشاء جميع الحسابات التي سيتم تسليمها لنا باستخدام الباسورد التالي:
+                <span style="direction:ltr; display:inline-block; margin-top:4px; font-weight:bold; font-family:monospace; background:#fff7ed; padding:3px 8px; border-radius:6px;">
+                    aass1122
+                </span>
+            </div>
+
             <form id="sellForm">
                 <div class="form-group">
                     <label for="name">الاسم الكامل *</label>
@@ -281,11 +291,14 @@
                     <textarea id="emails" required placeholder="أدخل الإيميلات هنا، سطر واحد لكل إيميل&#10;مثال:&#10;email1@example.com&#10;email2@example.com"></textarea>
                     <div id="emailCount" style="margin-top: 8px; color: #666; font-size: 14px;">عدد الإيميلات: 0</div>
                     
-                    <!-- ملاحظة الباسورد -->
-                    <small style="display:block; margin-top:6px; color:#b45309;">
-                        🔑 ملاحظة: في حالة احتجت تعمل باسورد للملف أو الحسابات، استخدم الباسورد التالي:
-                        <strong>aass1122</strong>
-                    </small>
+                    <!-- ✅ ملاحظة قوية عن الباسورد -->
+                    <div style="margin-top:8px; padding:8px 10px; background:#fffbeb; border:1px dashed #f59e0b; border-radius:8px; font-size:14px; color:#92400e;">
+                        🔑 <strong>ملاحظة مهمة:</strong><br>
+                        يرجى إنشاء جميع الحسابات بالبسورد التالي:
+                        <span style="direction:ltr; display:inline-block; margin-top:4px; font-weight:bold; font-family:monospace; background:#fff7ed; padding:3px 8px; border-radius:6px;">
+                            aass1122
+                        </span>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -586,7 +599,7 @@
 الإيميلات:
 ${emailsVal}
 
-🔑 الباسورد المتفق عليه: aass1122`;
+🔑 الباسورد المتفق عليه لكل الحسابات: aass1122`;
 
                 // فتح واتساب على رقمك بالرسالة الجاهزة
                 window.open(
