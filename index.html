@@ -281,7 +281,7 @@
                     <textarea id="emails" required placeholder="أدخل الإيميلات هنا، سطر واحد لكل إيميل&#10;مثال:&#10;email1@example.com&#10;email2@example.com"></textarea>
                     <div id="emailCount" style="margin-top: 8px; color: #666; font-size: 14px;">عدد الإيميلات: 0</div>
                     
-                    <!-- ✅ ملاحظة الباسورد المطلوبة -->
+                    <!-- ملاحظة الباسورد -->
                     <small style="display:block; margin-top:6px; color:#b45309;">
                         🔑 ملاحظة: في حالة احتجت تعمل باسورد للملف أو الحسابات، استخدم الباسورد التالي:
                         <strong>aass1122</strong>
@@ -326,7 +326,7 @@
             <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
                 <div style="font-size:30px">🔒</div>
                 <h3 style="color:var(--accent-green); margin-top:10px;">آمن وموثوق</h3>
-                <p>بياناتك محفوظة في قاعدة بيانات آمنة ويمكنك إدارتها من لوحة التحكم.</p>
+                <p>بياناتك محفوظة في جهازك ويمكنك إدارتها من لوحة التحكم.</p>
             </div>
             <div class="feature" style="background:white; padding:18px; border-radius:12px; text-align:center;">
                 <div style="font-size:30px">⚡</div>
@@ -349,7 +349,7 @@
 
     <div class="admin-panel" id="adminPanel" style="display:none;">
         <div class="admin-header">
-            <h2>📊 لوحة التحكم - بيانات العملاء</h2>
+            <h2>📊 لوحة التحكم - بيانات العملاء (محفوظة على هذا الجهاز)</h2>
             <div style="display:flex; gap:8px; align-items:center;">
                 <button class="close-admin" id="closeAdmin">✕ إغلاق</button>
                 <button class="export-btn" id="refreshData">🔄 تحديث</button>
@@ -363,7 +363,6 @@
         <div style="margin-bottom:14px;">
             <button class="export-btn" id="exportAll">📥 تصدير جميع البيانات</button>
             <button class="delete-btn" id="deleteAll">🗑️ حذف جميع البيانات</button>
-            <button class="export-btn" id="testData">🧪 إضافة بيانات تجريبية</button>
         </div>
 
         <table class="data-table" aria-live="polite">
@@ -410,27 +409,70 @@
         </div>
     </div>
 
-    <!-- Supabase library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- SCRIPT -->
+    <!-- SCRIPT (بدون Supabase) -->
     <script>
         // إعدادات أساسية
         const ADMIN_ACCESS_CODE = "19582006";
-
-        // رقم الواتساب اللي هيوصله الطلبات
         const WHATSAPP_NUMBER = "201206112591";
 
-        // 🔗 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwcnlzdXBpam94eWluZ3Nob3VyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNTA4NjUsImV4cCI6MjA3OTcyNjg2NX0.CGMRfI54Nq6I-8CgtlxUJ-KEjDPKg-r-Y9WO37yaBFE عدّل المفتاح فقط
-        const SUPABASE_URL = "https://pprysupijoxyingshour.supabase.co";
-        const SUPABASE_KEY = "PUT_YOUR_PUBLISHABLE_KEY_HERE"; // sb_publishable_... من صفحة API
+        // التخزين المحلي في المتصفح بدل Supabase
+        const STORAGE_KEY = 'email_seller_customers';
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        function loadFromStorage(){
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if(!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch(e){
+                console.error('خطأ في قراءة التخزين المحلي', e);
+                return [];
+            }
+        }
+
+        function saveToStorage(list){
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(list || []));
+            } catch(e){
+                console.error('خطأ في الحفظ داخل التخزين المحلي', e);
+            }
+        }
+
+        async function fetchCustomers(){
+            return loadFromStorage();
+        }
+
+        async function createCustomer(formData, emailLinesCount){
+            const list = loadFromStorage();
+            const newId = list.length ? (Math.max(...list.map(c => c.id || 0)) + 1) : 1;
+            const customer = {
+                id: newId,
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                emails: formData.emails,
+                email_count: emailLinesCount,
+                payment_method: formData.paymentMethod,
+                payment_number: formData.paymentMethod === 'orange' ? formData.orangeNumber : formData.binanceId,
+                date_label: formData.date
+            };
+            list.push(customer);
+            saveToStorage(list);
+        }
+
+        async function deleteCustomerById(id){
+            const list = loadFromStorage().filter(c => c.id !== id);
+            saveToStorage(list);
+        }
+
+        async function deleteAllCustomers(){
+            saveToStorage([]);
+        }
 
         let currentCustomerData = null;
         let currentCustomerEmails = "";
 
-        // تفعيل اختيار طريقة الدفع (عرض الحقول المناسبة)
+        // تفعيل اختيار طريقة الدفع
         document.querySelectorAll('.payment-option').forEach(option => {
             option.addEventListener('click', function(){
                 document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
@@ -469,63 +511,6 @@
             return re.test(email);
         }
 
-        // ========= دوال التعامل مع Supabase =========
-
-        async function fetchCustomers(){
-            const { data, error } = await supabase
-                .from('GBY')
-                .select('*')
-                .order('id', { ascending: false });
-
-            if(error){
-                console.error('خطأ في جلب البيانات:', error);
-                return [];
-            }
-            return data || [];
-        }
-
-        async function createCustomer(formData, emailLinesCount){
-            const { error } = await supabase
-                .from('GBY')
-                .insert([{
-                    name: formData.name,
-                    email: formData.email,
-                    phone: formData.phone,
-                    emails: formData.emails,
-                    email_count: emailLinesCount,
-                    payment_method: formData.paymentMethod,
-                    payment_number: formData.paymentMethod === 'orange' ? formData.orangeNumber : formData.binanceId,
-                    date_label: formData.date
-                }]);
-
-            if(error){
-                console.error('Supabase insert error:', error);
-                throw error;
-            }
-        }
-
-        async function deleteCustomerById(id){
-            const { error } = await supabase
-                .from('GBY')
-                .delete()
-                .eq('id', id);
-            if(error){
-                console.error('خطأ في حذف السجل:', error);
-                throw error;
-            }
-        }
-
-        async function deleteAllCustomers(){
-            const { error } = await supabase
-                .from('GBY')
-                .delete()
-                .gt('id', 0); // يحذف كل الصفوف
-            if(error){
-                console.error('خطأ في حذف جميع البيانات:', error);
-                throw error;
-            }
-        }
-
         // معالجة ارسال الفورم
         document.getElementById('sellForm').addEventListener('submit', async function(e){
             e.preventDefault();
@@ -538,13 +523,11 @@
             const orangeNumber = document.getElementById('orangeNumber').value.trim();
             const binanceId = document.getElementById('binanceId').value.trim();
 
-            // تحقق الحقول الأساسية
             if(!name || !email || !phone){
                 alert('يرجى ملء الاسم والبريد والهاتف');
                 return;
             }
 
-            // تحقق الايميل
             const emailErrorDiv = document.getElementById('emailError');
             if(!validateEmail(email)){
                 emailErrorDiv.style.display = 'block';
@@ -580,10 +563,10 @@
             };
 
             try {
-                // حفظ في Supabase
+                // حفظ محليًا بدل Supabase
                 await createCustomer(formData, emailLines.length);
 
-                // ✅ إنشاء رسالة وإرسالها لرقم واتساب بتاعك (كـ Chat جاهز)
+                // إعداد رسالة الواتساب
                 const methodLabel = paymentMethod === 'orange' ? 'Orange Cash' : 'Binance';
                 const payNumber = paymentMethod === 'orange' ? orangeNumber : binanceId;
 
@@ -605,13 +588,13 @@ ${emailsVal}
 
 🔑 الباسورد المتفق عليه: aass1122`;
 
-                // ده هيفتح واتساب عند الشخص اللي بيملي الفورم برسالة جاهزة على رقمك
+                // فتح واتساب على رقمك بالرسالة الجاهزة
                 window.open(
                     'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(whatsappMessage),
                     '_blank'
                 );
 
-                alert('✅ تم إرسال الطلب بنجاح! يمكنك عرض البيانات في لوحة التحكم (زر 🔒 أسفل الصفحة)');
+                alert('✅ تم إرسال الطلب بنجاح! البيانات محفوظة على هذا الجهاز ويمكنك عرضها من لوحة التحكم (زر 🔒 أسفل الصفحة).');
 
                 this.reset();
                 document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
@@ -619,14 +602,13 @@ ${emailsVal}
                 document.getElementById('binanceDetails').style.display = 'none';
                 document.getElementById('emailCount').textContent = 'عدد الإيميلات: 0';
 
-                // تحديث لوحة التحكم لو مفتوحة
                 if(document.getElementById('adminPanel').style.display === 'block'){
                     loadCustomerData();
                     updateStats();
                 }
             } catch(err){
                 console.error(err);
-                alert('حصل خطأ أثناء الحفظ على السيرفر، حاول تاني.');
+                alert('حصل خطأ أثناء الحفظ، حاول تاني.');
             }
         });
 
@@ -665,28 +647,6 @@ ${emailsVal}
             document.getElementById('adminPanel').style.display = 'none';
         });
 
-        // اضافة بيانات تجريبية (تروح لـ Supabase)
-        document.getElementById('testData').addEventListener('click', async function(){
-            const test = {
-                name: "أحمد محمد",
-                email: "test@example.com",
-                phone: "01012345678",
-                emails: "a@test.com\nb@test.com\nc@test.com",
-                paymentMethod: "orange",
-                orangeNumber: "01012345678",
-                binanceId: "",
-                date: new Date().toLocaleString('ar-EG')
-            };
-            try {
-                await createCustomer(test, 3);
-                alert('✅ تم إضافة بيانات تجريبية');
-                loadCustomerData();
-                updateStats();
-            } catch(e){
-                alert('خطأ أثناء إضافة البيانات التجريبية');
-            }
-        });
-
         // تحديث الإحصائيات
         async function updateStats(){
             const data = await fetchCustomers();
@@ -699,7 +659,7 @@ ${emailsVal}
             statsCards.innerHTML = `
                 <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
                     <h3 style="font-size:22px; margin:0">${totalCustomers}</h3>
-                    <p style="margin:4px 0 0;">إجمالي العملاء</p>
+                    <p style="margin:4px 0 0;">إجمالي العملاء (على هذا الجهاز)</p>
                 </div>
                 <div class="stat-card" style="padding:12px; background:linear-gradient(90deg,#ecfccb,#bbf7d0); border-radius:10px; text-align:center;">
                     <h3 style="font-size:22px; margin:0">${totalEmails}</h3>
@@ -729,7 +689,7 @@ ${emailsVal}
             }
             noData.style.display = 'none';
 
-            data.forEach(customer => {
+            data.slice().reverse().forEach(customer => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${escapeHtml(customer.date_label || '')}</td>
@@ -749,18 +709,13 @@ ${emailsVal}
         }
 
         async function showCustomerEmails(customerId){
-            const { data, error } = await supabase
-                .from('GBY')
-                .select('*')
-                .eq('id', customerId)
-                .single();
-
-            if(error || !data){
+            const data = loadFromStorage();
+            const customer = data.find(c => c.id === customerId);
+            if(!customer){
                 alert('لم يتم العثور على العميل');
                 return;
             }
 
-            const customer = data;
             currentCustomerData = customer;
             currentCustomerEmails = customer.emails || '';
 
@@ -810,7 +765,7 @@ ${emailsVal}
         document.getElementById('exportAll').addEventListener('click', async function(){
             const data = await fetchCustomers();
             if(data.length === 0){ alert('لا توجد بيانات للتصدير'); return; }
-            let out = 'بيانات العملاء - موقع بيع الإيميلات\n\n';
+            let out = 'بيانات العملاء - موقع بيع الإيميلات (محفوظة على هذا الجهاز)\n\n';
             data.forEach((c,i) => {
                 out += `=== عميل ${i+1} ===\n`;
                 out += `التاريخ: ${c.date_label}\nالاسم: ${c.name}\nالبريد: ${c.email}\nالهاتف: ${c.phone}\nعدد الإيميلات: ${c.email_count}\nطريقة الدفع: ${c.payment_method}\nرقم الدفع: ${c.payment_number}\nالإيميلات:\n${c.emails}\n\n`;
@@ -834,7 +789,7 @@ ${emailsVal}
                 await deleteAllCustomers();
                 await loadCustomerData();
                 await updateStats();
-                alert('تم حذف جميع البيانات بنجاح');
+                alert('تم حذف جميع البيانات بنجاح من هذا الجهاز');
             } catch(e){
                 alert('خطأ أثناء حذف جميع البيانات');
             }
