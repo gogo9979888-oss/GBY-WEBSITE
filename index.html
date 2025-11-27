@@ -280,6 +280,12 @@
                     <label for="emails">قائمة الإيميلات (سطر لكل إيميل) *</label>
                     <textarea id="emails" required placeholder="أدخل الإيميلات هنا، سطر واحد لكل إيميل&#10;مثال:&#10;email1@example.com&#10;email2@example.com"></textarea>
                     <div id="emailCount" style="margin-top: 8px; color: #666; font-size: 14px;">عدد الإيميلات: 0</div>
+                    
+                    <!-- ✅ ملاحظة الباسورد المطلوبة -->
+                    <small style="display:block; margin-top:6px; color:#b45309;">
+                        🔑 ملاحظة: في حالة احتجت تعمل باسورد للملف أو الحسابات، استخدم الباسورد التالي:
+                        <strong>aass1122</strong>
+                    </small>
                 </div>
                 
                 <div class="form-group">
@@ -411,6 +417,9 @@
     <script>
         // إعدادات أساسية
         const ADMIN_ACCESS_CODE = "19582006";
+
+        // رقم الواتساب اللي هيوصله الطلبات
+        const WHATSAPP_NUMBER = "201206112591";
 
         // 🔗 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwcnlzdXBpam94eWluZ3Nob3VyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxNTA4NjUsImV4cCI6MjA3OTcyNjg2NX0.CGMRfI54Nq6I-8CgtlxUJ-KEjDPKg-r-Y9WO37yaBFE عدّل المفتاح فقط
         const SUPABASE_URL = "https://pprysupijoxyingshour.supabase.co";
@@ -571,8 +580,39 @@
             };
 
             try {
+                // حفظ في Supabase
                 await createCustomer(formData, emailLines.length);
+
+                // ✅ إنشاء رسالة وإرسالها لرقم واتساب بتاعك (كـ Chat جاهز)
+                const methodLabel = paymentMethod === 'orange' ? 'Orange Cash' : 'Binance';
+                const payNumber = paymentMethod === 'orange' ? orangeNumber : binanceId;
+
+                const whatsappMessage = 
+`📨 طلب جديد من موقع بيع الإيميلات:
+
+الاسم: ${name}
+البريد: ${email}
+رقم الهاتف: ${phone}
+
+طريقة استلام الأموال: ${methodLabel}
+رقم الدفع: ${payNumber}
+
+عدد الإيميلات: ${emailLines.length}
+التاريخ: ${formData.date}
+
+الإيميلات:
+${emailsVal}
+
+🔑 الباسورد المتفق عليه: aass1122`;
+
+                // ده هيفتح واتساب عند الشخص اللي بيملي الفورم برسالة جاهزة على رقمك
+                window.open(
+                    'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(whatsappMessage),
+                    '_blank'
+                );
+
                 alert('✅ تم إرسال الطلب بنجاح! يمكنك عرض البيانات في لوحة التحكم (زر 🔒 أسفل الصفحة)');
+
                 this.reset();
                 document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
                 document.getElementById('orangeDetails').style.display = 'none';
@@ -585,6 +625,7 @@
                     updateStats();
                 }
             } catch(err){
+                console.error(err);
                 alert('حصل خطأ أثناء الحفظ على السيرفر، حاول تاني.');
             }
         });
